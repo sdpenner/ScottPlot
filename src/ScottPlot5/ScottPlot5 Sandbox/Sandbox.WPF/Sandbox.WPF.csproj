@@ -12,4 +12,14 @@
     <ItemGroup>
         <ProjectReference Include="..\..\ScottPlot5 Controls\ScottPlot.WPF\ScottPlot.WPF.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Media\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Media\baboon-gray.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
 </Project>

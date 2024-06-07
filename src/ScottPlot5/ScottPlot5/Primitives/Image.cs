@@ -48,6 +48,11 @@ public class Image : IDisposable
         SKImage = SKImage.FromBitmap(bmp);
     }
 
+    internal SKBitmap ToBitmap()
+    {
+        return SKBitmap.FromImage(SKImage);
+    }
+
     /// <summary>
     /// SkiaSharp cannot natively create BMP files. 
     /// This function creates bitmaps in memory manually.

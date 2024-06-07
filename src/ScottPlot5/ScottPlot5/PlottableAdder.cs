@@ -282,6 +282,13 @@ public class PlottableAdder(Plot plot)
         return heatmap;
     }
 
+    public Heatmap Heatmap(Image image)
+    {
+        Heatmap heatmap = new(image);
+        Plot.PlottableList.Add(heatmap);
+        return heatmap;
+    }
+
     public HorizontalLine HorizontalLine(double y, float width = 2, Color? color = null, LinePattern pattern = LinePattern.Solid)
     {
         HorizontalLine line = new();

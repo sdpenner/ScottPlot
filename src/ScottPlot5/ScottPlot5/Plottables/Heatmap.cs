@@ -177,6 +177,12 @@ public class Heatmap : IPlottable, IHasColorAxis
         Intensities = intensities;
     }
 
+    public Heatmap(Image grayscaleImage)
+    {
+        using SKBitmap bitmap = grayscaleImage.ToBitmap();
+        Intensities = GetIntensitiesFromBitmap(bitmap);
+    }
+
     ~Heatmap()
     {
         Bitmap?.Dispose();
@@ -273,5 +279,26 @@ public class Heatmap : IPlottable, IHasColorAxis
         SKRect rect = Axes.GetPixelRect(AlignedExtent).ToSKRect();
 
         rp.Canvas.DrawBitmap(Bitmap, rect, paint);
+    }
+
+    // Uses value from pixel color to substitute as grayscale value
+    // There are a lot of different ways to deriving grayscale from color.
+    // We could also have an implementation that assumes grayscale and just uses the 
+    // value from one of the color channels.
+    private static double[,] GetIntensitiesFromBitmap(SKBitmap bitmap)
+    {
+        double[,] intensities = new double[bitmap.Height, bitmap.Width];
+
+        for (int y = 0; y < bitmap.Height; y++)
+        {
+            for (int x = 0; x < bitmap.Width; x++)
+            {
+                SKColor color = bitmap.GetPixel(x, y);
+                color.ToHsv(out _, out _, out float value);
+                intensities[y, x] = value;
+            }
+        }
+
+        return intensities;
     }
 }
