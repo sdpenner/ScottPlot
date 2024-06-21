@@ -2,6 +2,8 @@
 
 public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
 {
+    private double[,] _intensities = intensities;
+
     public bool IsVisible { get; set; } = true;
     public IAxes Axes { get; set; } = new Axes();
     private IColormap _colormap { get; set; } = new Colormaps.Viridis();
@@ -189,7 +191,16 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
     /// After editing contents users must call <see cref="Update"/> before changes
     /// appear on the heatmap.
     /// </summary>
-    public readonly double[,] Intensities = intensities;
+    public double[,] Intensities
+    {
+        get => _intensities;
+        set
+        {
+            _intensities = value;
+            DataRange = Range.GetRange(Intensities);
+            Update();
+        }
+    }
 
     /// <summary>
     /// Defines what color will be used to fill cells containing NaN.
@@ -313,7 +324,6 @@ public class Heatmap(double[,] intensities) : IPlottable, IHasColorAxis
     /// </summary>
     public void Update()
     {
-        DataRange = Range.GetRange(Intensities);
         uint[] argbs = GetArgbValues();
         Bitmap?.Dispose();
         Bitmap = Drawing.BitmapFromArgbs(argbs, Width, Height);
